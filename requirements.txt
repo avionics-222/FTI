@@ -39,7 +39,6 @@ HX711==1.0.0
 i2cdevice==1.0.0
 idna==3.3
 importlib-metadata==4.12.0
-influxdb_client==1.48.0
 isort==5.6.4
 itsdangerous==2.1.2
 jedi==0.18.2
@@ -79,7 +78,7 @@ pycairo==1.20.1
 pycryptodomex==3.11.0
 pycups==2.0.1
 pyftdi==0.56.0
-pygame==2.1.2
+pygame==2.6.1
 Pygments==2.14.0
 PyGObject==3.42.2
 pyinotify==0.9.6
@@ -88,8 +87,6 @@ pylint==2.16.2
 pymodbus==3.11.1
 PyOpenGL==3.1.6
 pyOpenSSL==23.0.0
-PyQt5==5.15.9
-PyQt5-sip==12.11.1
 pyrsistent==0.18.1
 pyserial==3.5
 pysmbc==1.0.23
