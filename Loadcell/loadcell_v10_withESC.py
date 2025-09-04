@@ -307,7 +307,7 @@ if __name__ == "__main__":
     for i in range(number_lc):
         headers.append(f"{load_cell_labels[i]} (Kg)")
     if esc_data_state == 1:
-        headers += ['Total Weight (Kg)', 'Total Thrust (N)', 'RPM'+str(can_v1.RPM_REGISTER), 'Torque (Nm)'+str(can_v1.TORQUE_REGISTER), 'Motor Temp (°C)'+str(can_v1.TEMP_REGISTER), 'Current (A)'+str(can_v1.CURRENT_REGISTER),'Vdc (V)'+str(can_v1.VDC_REGISTER),'Vout(V)'+str(can_v1.VOUT_VXXX),'IGBT Temp(°C)'+str(can_v1.IGBT_TEMP),'RPM Command'+str(can_v1.RPM_COMMAND_REGISTER),'Battery_Volt(V)'+str(can_v1.BATTERY_ID),'Battery_Bus_Volt(V)'+str(can_v1.BATTERY_ID),'Battery_Power(W)'+str(can_v1.BATTERY_ID)]
+        headers += ['Total Weight (Kg)', 'Total Thrust (N)', 'RPM'+str(can_v1.RPM_REGISTER), 'ESC_Torque (Nm)'+str(can_v1.TORQUE_REGISTER), 'Motor Temp (°C)'+str(can_v1.TEMP_REGISTER), 'Current (A)'+str(can_v1.CURRENT_REGISTER),'Vdc (V)'+str(can_v1.VDC_REGISTER),'Vout(V)'+str(can_v1.VOUT_VXXX),'IGBT Temp(°C)'+str(can_v1.IGBT_TEMP),'RPM Command'+str(can_v1.RPM_COMMAND_REGISTER),'Battery_Volt(V)'+str(can_v1.BATTERY_ID),'Battery_Bus_Volt(V)'+str(can_v1.BATTERY_ID),'Battery_Power(W)'+str(can_v1.BATTERY_ID)]
     csv_writer.writerow(headers)
 
     try:
@@ -392,7 +392,7 @@ if __name__ == "__main__":
             if load_cell_state == 1:
                 print(f"Latest Weights: {latest_weights} | Total: {total_weight:.2f} Kg | Thrust: {total_weight * 9.8: .3f} N")
             if esc_data_state == 1:
-                print(f"RPM: {ESC_data_output[0]} | Torque: {ESC_data_output[1]} Nm | M. Temp: {ESC_data_output[2]}  °C  | Current: {ESC_data_output[3]} A | VDC: {ESC_data_output[4]} V | Vout: {ESC_data_output[5]} V | IGBT Temp: {ESC_data_output[6]}°C | RPM Command: {ESC_data_output[7]} | Battery Volt: {ESC_data_output[8]} | Battery Bus Volt: {ESC_data_output[9]} | Battery Power: {ESC_data_output[10]} W" )
+                print(f"RPM: {ESC_data_output[0]} | ESC_Torque: {ESC_data_output[1]} Nm | M. Temp: {ESC_data_output[2]}  °C  | Current: {ESC_data_output[3]} A | VDC: {ESC_data_output[4]} V | Vout: {ESC_data_output[5]} V | IGBT Temp: {ESC_data_output[6]}°C | RPM Command: {ESC_data_output[7]} | Battery Volt: {ESC_data_output[8]} | Battery Bus Volt: {ESC_data_output[9]} | Battery Power: {ESC_data_output[10]} W" )
             print("-----------------------------------------------------------------")
             
             
