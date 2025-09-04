@@ -21,7 +21,7 @@ flow_rates = [0.0, 0.0]
 pressure_bars = [0.0, 0.0]
 temperatures = [0.0, 0.0]
 
-
+#Temperature offesets
 off_t2 = 9.2     #9.5        #ID-1 RS485
 off_t1 = 6.7     #6.8        #ID-3 RS485
 
@@ -167,3 +167,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
