@@ -9,9 +9,6 @@ import csv
 from datetime import datetime
 from math import sqrt
 
-from influxdb_client import InfluxDBClient, Point
-from influxdb_client.client.write_api import SYNCHRONOUS
-from influxdb_client import client
 import signal
 ## noutused
 running = True
@@ -38,21 +35,6 @@ num_esc_param = 11
 
 ###########
 cloud_test = 0
-#1 - Cloud ACtive 
-#Any other - Cloud Inactive
-
-token = 'ZdwOtVTj7kWLmHqBk_p7d3Snz1Gbt2Xm1EPNUlY96xUxhV93wtU1KWb5mBZ6ubRl8I_m-ty0Jnxbb38Nl5nrFg=='
-influxdb_url = "https://us-east-1-1.aws.cloud2.influxdata.com"  # InfluxDB URL
-org = "IdeaForge"  # Organization name
-
-bucket = "Thrust_Rig_v1"  # Bucket name
-
-# Create an InfluxDB client
-client = InfluxDBClient(url=influxdb_url, token=token)
-
-# Create a Write API instance
-write_api = client.write_api()
-
 
 def loadcell_worker(dout, sck, load_cell_label, offset, queue, index):
     from hx711_module import HX711
@@ -313,18 +295,7 @@ if __name__ == "__main__":
     ]
     #TQ Offset with Propellor with calib 30.4
     hardcoded_offsets = [821932.5, -1652023.5, -1018204.0, 1323261.0, 0, 0, 0, 0] 
-    
-    #hardcoded_offsets = [-715552.5, -893601.5, -687848.0, 1770185.0, 0, 0, 0, 0]   #1740185.0
-    
-    #TQ Offset with Propellor with Bolts and ROPE_STYLE 2
-    #hardcoded_offsets = [-210571.5, -1353424.5, -753209.5, 1783434.5, 0, 0, 0, 0]
-    
-    #TQ Offset without Propellor
-    #hardcoded_offsets = [-11426.5, -1077229.0, -855558.5, 2029695.0, 0, 0, 0, 0]
-    
-    #TQ Offset with Propellor with calib 30.4
-    #hardcoded_offsets = [-657204.5, -869113.5, -644089.5, 1767715.5, 0, 0, 0, 0]
-    
+
     load_cell_labels = [
         "Thrust_0Deg", "Thrust_90Deg", "Thrust_180Deg", "Thrust_270Deg",
         "Torque_0Deg", "Torque_90Deg", "Torque_180Deg", "Torque_270Deg"
@@ -340,8 +311,8 @@ if __name__ == "__main__":
     last_update_times_ESC = [time.time()] * num_esc_param
 
     # Setup CSV file
-    os.makedirs("calib_logs", exist_ok=True)
-    csv_filename = f"logs/{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    os.makedirs("torque_logs", exist_ok=True)
+    csv_filename = f"torque_logs/{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
     csv_file = open(csv_filename, mode='w', newline='')
     csv_writer = csv.writer(csv_file)
 
@@ -437,93 +408,7 @@ if __name__ == "__main__":
                 print(f"RPM: {ESC_data_output[0]} | ESC_Torque: {ESC_data_output[1]} Nm | M. Temp: {ESC_data_output[2]}  °C  | Current: {ESC_data_output[3]} A | VDC: {ESC_data_output[4]} V | Vout: {ESC_data_output[5]} V | IGBT Temp: {ESC_data_output[6]}°C | RPM Command: {ESC_data_output[7]} | Battery Volt: {ESC_data_output[8]} | Battery Bus Volt: {ESC_data_output[9]} | Battery Power: {ESC_data_output[10]} W" )
             print("-----------------------------------------------------------------")
             
-            # InfluxDB CLOUD DATA
-            
-            point = (
-            Point("Weight_Data")
-            .tag("Sensor", "4_Loadcell")
-            .field("Weight", round(total_weight,2))
-            )  
-            
-            point1 = (
-            Point("Thrust_Data")
-            .tag("Sensor", "Thrust")
-            .field("Thrust", round(total_weight * 9.8,3))
-            )  
-            
-            point2 = (
-            Point("RPM_Data")
-            .tag("Sensor", "RPM")
-            .field("RPM",abs(float(ESC_data_output[0])))
-            )  
-            
-            point3 = (
-            Point("Torque_Data")
-            .tag("Sensor", "Torque")
-            .field("Torque", float(ESC_data_output[1]))
-            )  
-            
-            point4 = (
-            Point("Motor_Temp_Data")
-            .tag("Sensor", "M_Temp")
-            .field("Motor_Temp", ESC_data_output[2])
-            )  
-            
-            point5 = (
-            Point("Current_Data")
-            .tag("Sensor", "Current")
-            .field("Current", ESC_data_output[3])
-            )  
-            point6 = (
-            Point("Vdc_Data")
-            .tag("Sensor", "Vdc")
-            .field("Vdc", ESC_data_output[4])
-            )
-            point7 = (
-                Point("Vout_Data")
-                .tag("Sensor", "Vout")
-                .field("Vout", ESC_data_output[5])
-            )
-            point8 = (
-                Point("Igbt_temp_Data")
-                .tag("Sensor", "Igbt")
-                .field("Igbt", ESC_data_output[6])
-            )
-            point9 = (
-                Point("RPM_Command_Data")
-                .tag("Sensor", "RPM_Command")
-                .field("RPM_Command", ESC_data_output[7])
-            )
-            point10 = (
-                Point("Battery_Volt_Data")
-                .tag("Sensor", "Battery_Volt")
-                .field("Battery_Volt", ESC_data_output[8])
-            )
-            point11 = (
-                Point("Battery_Bus_Volt_Data")
-                .tag("Sensor", "Battery_Bus_Volt")
-                .field("Battery_Bus_Volt", ESC_data_output[9])
-            )
-            point12 = (
-                Point("Battery_Power_Data")
-                .tag("Sensor", "Battery_Power")
-                .field("Battery_Power", ESC_data_output[10])
-            )
-            if cloud_test == 1:
-                write_api.write(bucket=bucket, org=org, record=point)
-                write_api.write(bucket=bucket, org=org, record=point1)
-                write_api.write(bucket=bucket, org=org, record=point2)
-                write_api.write(bucket=bucket, org=org, record=point3)
-                write_api.write(bucket=bucket, org=org, record=point4)
-                write_api.write(bucket=bucket, org=org, record=point5)
-                write_api.write(bucket=bucket, org=org, record=point6)
-                write_api.write(bucket=bucket, org=org, record=point7)
-                write_api.write(bucket=bucket, org=org, record=point8)
-                write_api.write(bucket=bucket, org=org, record=point9)
-                write_api.write(bucket=bucket, org=org, record=point10)
-                write_api.write(bucket=bucket, org=org, record=point11)
-                write_api.write(bucket=bucket, org=org, record=point12)
-            
+          
             # Log data to CSV
             timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
             row = [timestamp]
