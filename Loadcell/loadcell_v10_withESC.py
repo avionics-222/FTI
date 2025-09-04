@@ -298,8 +298,8 @@ if __name__ == "__main__":
     last_update_times_ESC = [time.time()] * num_esc_param
 
     # Setup CSV file
-    os.makedirs("logs", exist_ok=True)
-    csv_filename = f"logs/{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    os.makedirs("thrust_logs", exist_ok=True)
+    csv_filename = f"thrust_logs/{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
     csv_file = open(csv_filename, mode='w', newline='')
     csv_writer = csv.writer(csv_file)
 
